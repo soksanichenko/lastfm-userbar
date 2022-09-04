@@ -1,0 +1,46 @@
+# coding: utf-8
+# developed by Stepan Oksanichenko
+import os
+
+import config
+from flask import Flask
+from flask_bootstrap import Bootstrap
+from werkzeug.middleware.proxy_fix import ProxyFix
+
+
+def create_app():
+    """
+    Create flask application
+    :return: flask applicatoin
+    """
+    from main import lastfm_app
+
+    app = Flask(__name__)
+    app.config.from_object(config)
+    app.register_blueprint(lastfm_app, url_prefix='/')
+    app.url_map.strict_slashes = False
+    app.wsgi_app = ProxyFix(app.wsgi_app)
+    Bootstrap(app)
+
+    return app
+
+
+def _force_https(wsgi_app):
+    def wrapper(environ, start_response):
+        environ['wsgi.url_scheme'] = 'https'
+        return wsgi_app(environ, start_response)
+    return wrapper
+
+
+application = create_app()
+
+if not os.environ.get('FLASK_DEBUG'):
+    application.wsgi_app = _force_https(application.wsgi_app)
+
+if __name__ == '__main__':
+    if os.environ.get('FLASK_DEBUG'):
+        application.run(
+            debug=True,
+            host='0.0.0.0',
+            port=8080,
+        )

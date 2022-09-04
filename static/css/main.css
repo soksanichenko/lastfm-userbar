@@ -1,0 +1,20 @@
+.center {
+    text-align: center;
+}
+.center-table {
+    margin-left: auto;
+    margin-right: auto;
+    border: none;
+}
+
+td {
+    text-align: left;
+    vertical-align: middle;
+    padding: 5px;
+    border: none;
+}
+
+.info {
+    font-size: 10pt;
+    color: grey;
+}
