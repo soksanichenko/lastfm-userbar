@@ -75,16 +75,16 @@ const validateUsername = debounce(async (username) => {
     try {
         const resp = await fetch(`/api/validate?username=${encodeURIComponent(username)}`);
         const data = await resp.json();
-        setValidationState(data.valid ? 'valid' : 'invalid', data.error ?? 'Invalid username');
+        setValidationState(data.valid ? 'valid' : 'invalid', data.error ?? t('username_invalid'));
     } catch {
-        setValidationState('invalid', 'Validation request failed');
+        setValidationState('invalid', t('username_failed'));
     }
 }, VALIDATE_DEBOUNCE_MS);
 
 async function generate() {
     const username = document.getElementById('username').value.trim();
     if (!username) {
-        setValidationState('invalid', 'Username is required');
+        setValidationState('invalid', t('username_required'));
         return;
     }
 
@@ -112,12 +112,11 @@ async function copyField(inputId) {
         input.select();
         document.execCommand('copy');
     }
-    const orig = btn.textContent;
-    btn.textContent = 'Copied!';
-    btn.classList.replace('btn-outline-secondary', 'btn-success');
+    btn.textContent = t('copied');
+    btn.classList.add('copied');
     setTimeout(() => {
-        btn.textContent = orig;
-        btn.classList.replace('btn-success', 'btn-outline-secondary');
+        btn.textContent = t('copy');
+        btn.classList.remove('copied');
     }, 1500);
 }
 
