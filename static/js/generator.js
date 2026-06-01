@@ -133,3 +133,6 @@ async function copyField(inputId) {
 document.getElementById('username').addEventListener('input', (e) => {
     validateUsername(e.target.value.trim());
 });
+
+// Validate the pre-filled default username on page load.
+validateUsername(document.getElementById('username').value.trim());
