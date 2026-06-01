@@ -40,7 +40,7 @@ def user_get_last_track(username: str) -> dict | str:
         playing = [track for track in result if track.get('now_playing')]
         last_track = dict((playing or result)[0])
 
-    return last_track  # type: ignore[return-value]
+    return last_track or 'No recent tracks'  # type: ignore[return-value]
 
 
 def _interpolate(f_co: RGBColor, t_co: RGBColor, steps: int):
@@ -113,12 +113,13 @@ def paste_text(text: str, text_color: RGBColor, inner_color: RGBColor,
     font = ImageFont.truetype(font_path, 14, encoding='utf-8')
 
     probe = Image.new('RGBA', (1, 1))
-    text_width = int(ImageDraw.Draw(probe).textlength(text, font=font))
 
     if truncate_text:
-        bar_width = min(max_width, logo_margin + text_width)
         text = '{}...'.format(text[:trunc_len]) if len(text) > trunc_len else text
+        text_width = int(ImageDraw.Draw(probe).textlength(text, font=font))
+        bar_width = min(max_width, logo_margin + text_width)
     else:
+        text_width = int(ImageDraw.Draw(probe).textlength(text, font=font))
         bar_width = max(default_width, logo_margin + text_width)
 
     in_img = gradient(inner_color, outer_color, border_color, width=bar_width)

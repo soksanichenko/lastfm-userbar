@@ -56,7 +56,7 @@ class LastFmApi:
             URL string for the requested image size.
         """
         assert image_data is not None, 'image_data should not be None'
-        return next(img['#text'] for img in image_data if img['size'] == size)
+        return next((img['#text'] for img in image_data if img['size'] == size), '')
 
 
 class User(LastFmApi):
@@ -103,6 +103,8 @@ class User(LastFmApi):
             'recent_tracks': [],
         }
         tracks = recent_tracks['recenttracks']['track']
+        if isinstance(tracks, dict):
+            tracks = [tracks]
         for track in tracks:
             _track: dict[str, object] = {
                 'track_name': track['name'].title(),
@@ -181,7 +183,4 @@ class User(LastFmApi):
         if to_time:
             data['endTimestamp'] = to_time
 
-        result = self._call_method('User.GetArtistTracks', data)
-        if self.raw or raw:
-            return result
-        return result
+        return self._call_method('User.GetArtistTracks', data)

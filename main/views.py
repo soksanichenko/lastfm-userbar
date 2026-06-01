@@ -35,6 +35,12 @@ _DEFAULT_IMG_DATA: dict[str, object] = {
 }
 
 
+@lastfm_app.errorhandler(ValueError)
+def handle_value_error(exc: ValueError) -> Response:
+    """Return HTTP 400 for invalid color/parameter values instead of a 500."""
+    return jsonify({'error': str(exc)}), 400
+
+
 @lastfm_app.route('/api/validate')
 def api_validate() -> Response:
     """Return JSON indicating whether a Last.fm username is valid."""

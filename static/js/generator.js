@@ -1,6 +1,7 @@
 'use strict';
 
 const VALIDATE_DEBOUNCE_MS = 500;
+let _usernameValid = false;
 
 function hexToRgbStr(hex) {
     const r = parseInt(hex.slice(1, 3), 16);
@@ -55,14 +56,19 @@ function setValidationState(state, message = '') {
 
     if (state === 'loading') {
         spinner.classList.remove('d-none');
+        _usernameValid = false;
     } else if (state === 'valid') {
         ok.classList.remove('d-none');
         input.classList.add('is-valid');
+        _usernameValid = true;
     } else if (state === 'invalid') {
         err.classList.remove('d-none');
         input.classList.add('is-invalid');
         feedback.textContent = message;
         feedback.classList.remove('d-none');
+        _usernameValid = false;
+    } else {
+        _usernameValid = false;
     }
 }
 
@@ -85,6 +91,10 @@ async function generate() {
     const username = document.getElementById('username').value.trim();
     if (!username) {
         setValidationState('invalid', t('username_required'));
+        return;
+    }
+    if (!_usernameValid) {
+        setValidationState('invalid', t('username_invalid'));
         return;
     }
 
