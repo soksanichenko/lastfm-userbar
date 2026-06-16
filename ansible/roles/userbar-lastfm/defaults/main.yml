@@ -1,0 +1,11 @@
+---
+userbar_lastfm_container_name: userbar-lastfm
+userbar_lastfm_image: userbar-lastfm
+userbar_lastfm_port: 8100
+userbar_lastfm_app_dir: /opt/userbar-lastfm/app
+
+docker_volumes_directory: /opt/docker
+nginx_confd_path: "{{ docker_volumes_directory }}/nginx/conf.d"
+nginx_custom_upstream_path: "{{ nginx_confd_path }}/custom-upstream"
+nginx_docker_container_name: nginx-server
+...

@@ -1,28 +1,39 @@
-name: Trigger deploy
+---
+name: Deploy
 
 on:
   push:
     branches: [master]
   workflow_dispatch:
 
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
 jobs:
-  dispatch:
+  deploy:
     runs-on: ubuntu-latest
     environment: production
     steps:
-      - name: Send repository_dispatch to infra repo
-        uses: actions/github-script@v7
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Inject Python dependencies into ansible-core venv
+        run: pipx inject ansible-core infisicalsdk
+
+      - name: Install Ansible collections
+        working-directory: ansible
+        run: ansible-galaxy collection install -r requirements.yml
+
+      - name: Set up SSH key
+        uses: webfactory/ssh-agent@v0.9.1
         with:
-          github-token: ${{ secrets.DEPLOY_TOKEN }}
-          script: |
-            await github.rest.repos.createDispatchEvent({
-              owner: 'soksanichenko',
-              repo: 'infra',
-              event_type: 'deploy-userbar-lastfm',
-              client_payload: {
-                sha: context.sha,
-                ref: context.ref,
-                triggered_by: context.eventName,
-                service: 'userbar-lastfm',
-              },
-            });
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Run deploy playbook
+        working-directory: ansible
+        env:
+          INFISICAL_API_URL: ${{ secrets.INFISICAL_API_URL }}
+          INFISICAL_CLIENT_ID: ${{ secrets.INFISICAL_CLIENT_ID }}
+          INFISICAL_CLIENT_SECRET: ${{ secrets.INFISICAL_CLIENT_SECRET }}
+        run: ansible-playbook -i ../inventory/hosts.yml deploy.yml

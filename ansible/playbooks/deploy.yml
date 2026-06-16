@@ -1,0 +1,9 @@
+---
+- name: Deploy userbar-lastfm
+  hosts: all
+  pre_tasks:
+    - name: Load secrets from Infisical
+      import_tasks: pre_tasks/infisical.yml
+  roles:
+    - userbar-lastfm
+...
