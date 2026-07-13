@@ -43,6 +43,8 @@
     env:
       SECRET_KEY: "{{ infisical_secrets.secrets['lastfm-shared-secret-lastfm-userbar'] }}"
       LASTFM_API_KEY: "{{ infisical_secrets.secrets['lastfm-api-key-lastfm-userbar'] }}"
+    labels:
+      monitoring.critical: "true"
   become: yes
 
 - name: Deploy nginx upstream config
