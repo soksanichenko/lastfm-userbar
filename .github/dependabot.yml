@@ -9,5 +9,20 @@ updates:
         patterns:
           - "*"
         update-types:
+          - "major"
           - minor
           - patch
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    target-branch: "main"
+    groups:
+      github-actions-dependencies:
+        patterns:
+          - "*"
+        update-types:
+          - "major"
+          - "minor"
+          - "patch"
