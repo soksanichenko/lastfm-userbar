@@ -109,7 +109,7 @@ Python ≥ 3.10 required; Docker image uses 3.12-slim.
 - Container exposes port 8100; Gunicorn runs with 2 workers.
 - Ansible role `lastfm-userbar` syncs code via rsync, builds image, runs container, and updates nginx configs.
 - Secrets (`SECRET_KEY`, `LASTFM_API_KEY`) are injected at deploy time from Infisical (keys: `lastfm-shared-secret-lastfm-userbar`, `lastfm-api-key-lastfm-userbar`).
-- CI triggers on push to `master` via `.github/workflows/deploy.yml`.
+- CI triggers on push to `main` via `.github/workflows/deploy.yml`.
 - `wsgi.py` wraps the WSGI app with `_force_https` when `FLASK_DEBUG` is not set.
 
 ## Ansible collections

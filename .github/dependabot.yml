@@ -1,17 +1,19 @@
+---
 version: 2
 updates:
-  - package-ecosystem: pip
-    directory: /
+  - package-ecosystem: "pip"
+    directory: "/"
     schedule:
-      interval: weekly
+      interval: "weekly"
+    target-branch: "main"
     groups:
       pip-dependencies:
         patterns:
           - "*"
         update-types:
           - "major"
-          - minor
-          - patch
+          - "minor"
+          - "patch"
 
   - package-ecosystem: "github-actions"
     directory: "/"
