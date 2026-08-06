@@ -4,7 +4,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 pip install -r "$SCRIPT_DIR/requirements.txt"
-ansible-galaxy collection install -r "$SCRIPT_DIR/ansible/requirements.yml"
+ansible-galaxy collection install -r "$SCRIPT_DIR/requirements.yml"
 
 INFISICAL_BINARY="/usr/bin/infisical"
 

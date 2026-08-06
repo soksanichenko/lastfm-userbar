@@ -91,7 +91,7 @@ Automated deployment runs on push to `master` via GitHub Actions (`.github/workf
 
 The pipeline:
 1. Injects the Infisical SDK into the `ansible-core` virtualenv.
-2. Installs Ansible collections from `ansible/requirements.yml`.
+2. Installs Ansible collections from `requirements.yml`.
 3. Loads `SSH_PRIVATE_KEY` from the `production` GitHub environment.
 4. Runs `ansible-playbook -i ../inventory/hosts.yml deploy.yml` from the `ansible/` directory.
 

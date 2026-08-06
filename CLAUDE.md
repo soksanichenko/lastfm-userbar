@@ -8,6 +8,7 @@ Flask app that generates Last.fm userbar PNG images. No database. Stateless per-
 lastfm-userbar/
 ├── install_dependencies.sh    # Installs Python + Ansible collection deps, infisical CLI
 ├── requirements.txt           # Dev tooling deps (pre-commit, ruff via pre-commit, ansible-lint, yamllint)
+├── requirements.yml           # Ansible collection deps (must stay at repo root — SemaphoreUI only auto-installs from here)
 ├── pyproject.toml             # Project metadata and ruff config
 ├── .pre-commit-config.yaml    # ruff + ruff-format hooks (args: sources/)
 ├── sources/                   # Docker build context
@@ -34,7 +35,6 @@ lastfm-userbar/
 │           └── format1.html    # Generator UI
 └── ansible/
     ├── ansible.cfg
-    ├── requirements.yml
     ├── inventories/
     │   └── zelgray.work/          # Production inventory
     ├── playbooks/
