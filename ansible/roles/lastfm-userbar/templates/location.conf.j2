@@ -1,6 +1,11 @@
+# Resolved per request (resolver + set) rather than through a static
+# upstream{} block, which nginx resolves once at startup: a recreated
+# container with a new IP would otherwise 502 until nginx restarts.
 location /static/ {
     proxy_intercept_errors on;
-    proxy_pass http://lastfm_userbar_upstream;
+    resolver 127.0.0.11 valid=10s ipv6=off;
+    set $lastfm_userbar_host "{{ lastfm_userbar_container_name }}";
+    proxy_pass http://$lastfm_userbar_host:{{ lastfm_userbar_port }};
     proxy_set_header Host $host;
     proxy_set_header X-Real-IP $client_real_ip;
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -15,7 +20,9 @@ location /static/ {
 
 location / {
     proxy_intercept_errors on;
-    proxy_pass http://lastfm_userbar_upstream;
+    resolver 127.0.0.11 valid=10s ipv6=off;
+    set $lastfm_userbar_host "{{ lastfm_userbar_container_name }}";
+    proxy_pass http://$lastfm_userbar_host:{{ lastfm_userbar_port }};
     proxy_set_header Host $host;
     proxy_set_header X-Real-IP $client_real_ip;
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;

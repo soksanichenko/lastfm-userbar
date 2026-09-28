@@ -1,6 +1,6 @@
 # lastfm-userbar
 
-Deploys the lastfm-userbar Flask app as a Docker container with nginx upstream and location config.
+Deploys the lastfm-userbar Flask app as a Docker container with an nginx location config.
 
 ## What it does
 
@@ -8,7 +8,7 @@ Deploys the lastfm-userbar Flask app as a Docker container with nginx upstream a
 - Syncs application code via rsync (excludes `ansible/`, `.git/`, `__pycache__/`)
 - Builds a Docker image from `sources/Dockerfile` (only when code changed)
 - Runs the container on the configured Docker network, injecting secrets as env vars
-- Deploys nginx upstream and location config templates; reloads nginx on change
+- Deploys the nginx location config (backend resolved per request via `resolver` + `set`, so a recreated container's new IP needs no nginx restart) and removes the static upstream file older deploys left; reloads nginx on change
 
 ## Variables
 
@@ -22,7 +22,7 @@ Variables from `defaults/main.yml` (operator-overridable):
 | `lastfm_userbar_app_dir` | `/opt/lastfm-userbar/app` | Remote code sync destination |
 | `docker_volumes_directory` | `/opt/docker` | Root for Docker-managed volumes |
 | `nginx_confd_path` | `{{ docker_volumes_directory }}/nginx/conf.d` | nginx `conf.d` directory |
-| `nginx_custom_upstream_path` | `{{ nginx_confd_path }}/custom-upstream` | nginx upstream config directory |
+| `nginx_custom_upstream_path` | `{{ nginx_confd_path }}/custom-upstream` | nginx upstream config directory (only used to remove the old upstream file) |
 | `nginx_docker_container_name` | `nginx-server` | Running nginx container name |
 
 Variables required in inventory `group_vars` (not in defaults):

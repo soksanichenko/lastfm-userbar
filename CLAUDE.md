@@ -47,7 +47,6 @@ lastfm-userbar/
             ├── handlers/main.yml
             ├── tasks/main.yml
             └── templates/
-                ├── upstream.conf.j2
                 └── location.conf.j2
 ```
 
