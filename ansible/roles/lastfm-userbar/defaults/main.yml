@@ -2,7 +2,7 @@
 lastfm_userbar_container_name: lastfm-userbar
 lastfm_userbar_image: lastfm-userbar
 lastfm_userbar_port: 8100
-lastfm_userbar_app_dir: /opt/lastfm-userbar/app
+lastfm_userbar_app_dir: "{{ docker_volumes_directory }}/lastfm-userbar/app"
 
 docker_volumes_directory: /opt/docker
 nginx_confd_path: "{{ docker_volumes_directory }}/nginx/conf.d"

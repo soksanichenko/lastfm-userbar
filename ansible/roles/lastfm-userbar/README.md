@@ -19,7 +19,7 @@ Variables from `defaults/main.yml` (operator-overridable):
 | `lastfm_userbar_container_name` | `lastfm-userbar` | Docker container name |
 | `lastfm_userbar_image` | `lastfm-userbar` | Docker image name |
 | `lastfm_userbar_port` | `8100` | Port the container listens on |
-| `lastfm_userbar_app_dir` | `/opt/lastfm-userbar/app` | Remote code sync destination |
+| `lastfm_userbar_app_dir` | `{{ docker_volumes_directory }}/lastfm-userbar/app` | Remote code sync destination (build context of the image; no state lives here). Before 22.11.2026 it defaulted to `/opt/lastfm-userbar/app`; the old directory is left behind on upgrade and can be deleted |
 | `docker_volumes_directory` | `/opt/docker` | Root for Docker-managed volumes |
 | `nginx_confd_path` | `{{ docker_volumes_directory }}/nginx/conf.d` | nginx `conf.d` directory |
 | `nginx_custom_upstream_path` | `{{ nginx_confd_path }}/custom-upstream` | nginx upstream config directory (only used to remove the old upstream file) |
